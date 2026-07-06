@@ -90,9 +90,9 @@
             const warningScreen = document.getElementById('warning-screen');
             const startBtn = document.getElementById('startBtn')
             let mouseX = 0.5;
-            let moueY = 0.5;
-            let targetmouseX = 0.5;
-            let targetmouseY = 0.5;
+            let mouseY = 0.5;
+            let targetMouseX = 0.5;
+            let targetMouseY = 0.5;
             function resize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
@@ -105,18 +105,20 @@
             });
             let animationFrame = 0;
             let startFractal = false;
+            const initialScaleFactor = 0.7; // Define initial scale factor here
             startBtn.addEventListener('click', () => {
                 warningScreen.style.opacity = '0';
-                warningScreen.style.visiblity = 'hidden';
+                warningScreen.style.visibility = 'hidden';
                 startFractal= true;
                 animate();
             });
-            function drawHypnoticCircle(x, y, radius, depth, maxDepth, angleOffset) {
+
+            function drawHypnoticCircle(x, y, radius, depth, maxDepth, angleOffset, scaleFactor) {
                 if (depth > maxDepth) return;
                 ctx.beginPath();
                 ctx.arc(x, y, radius, 0, Math.PI * 2);
                 const hue = (depth * 40 + animationFrame * 2) % 360;
-                ctx.strokeStyle = 'hsla(${hue}, 80%, 60%, ${1 - depth / maxDepth})';
+                ctx.strokeStyle = `hsla(${hue}, 80%, 60%, ${1 - depth / maxDepth})`;
                 ctx.lineWidth = 1.5;
                 ctx.stroke();
                 if (radius < 2) return;
@@ -132,7 +134,7 @@
             function animate() {
                 if (!startFractal) return;
                 mouseX += (targetMouseX - mouseX) * 0.08;
-                mouseY += (tagetMouseY - mouseY) * 0.08;
+                mouseY += (targetMouseY - mouseY) * 0.08;
                 ctx.fillStyle = 'rgba(5, 5, 5, 0.3)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 const centerX = canvas.width /2;
@@ -141,10 +143,10 @@
                 animationFrame++;
                 const rotationSpeed = (animationFrame * 0.005) + (mouseY * 4);
                 const dynamicScale = 0.35 + (mouseX * 0.2);
-                drawHypnoticCircle(centerX, centerY, baseRadius, 0, 5, rotationSpeed);
+                drawHypnoticCircle(centerX, centerY, baseRadius, 0, 5, rotationSpeed, dynamicScale);
                 requestAnimationFrame(animate); 
             }
-            animate();
+
         </script>   
     </body>
 </html>
